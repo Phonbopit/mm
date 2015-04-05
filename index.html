@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>MEAN-Machine</title>
+
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+</head>
+<body>
+	<h1>Hello MEAN Machine</h1>
+
+	<div ng-app="firstApp" ng-controller="mainController as main" class="container">
+		<h3>{{ main.message }}</h3>
+		<ul ng-repeat="computer in main.computers">
+			<li>{{ computer.name }}</li>
+		</ul>
+	</div>
+
+	<script type="text/javascript" src="bower_components/angular/angular.js"></script>
+	<script src="js/app.js"></script>
+</body>
+</html>
