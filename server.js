@@ -1,11 +1,12 @@
 var express = require('express');
 var path = require('path');
-var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var port = process.env.PORT || 5555;
-
+var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/mean');
+
+var User = require('./app/models/user');
 
 var app = express();
 var adminRouter = express.Router();
@@ -35,6 +36,14 @@ app.get('/', function(req, res) {
 
 var apiRouter = express.Router();
 
+apiRouter.use(function(req, res, next) {
+
+	console.log('Somebody I use to know :)');
+
+	next();
+
+});
+
 apiRouter.get('/', function(req, res) {
 
 	res.json({ 
@@ -42,6 +51,37 @@ apiRouter.get('/', function(req, res) {
 	});
 
 });
+
+apiRouter.route('/users')
+	.post(function(req, res) {
+
+		console.log('Loggin in /users post method ');
+
+		var user = new User();
+
+		// Set the users information
+		user.name = req.body.name;
+		user.username = req.body.username;
+		user.password = req.body.password;
+
+		user.save(function(err) {
+			
+			if (err) {
+				// duplicate entry
+				if (err.code === 11000) {
+					return res.json({ success: false, message: 'An username already exists.' });
+				} else {
+					return res.send(err);
+				} 
+			}
+
+			res.json({
+				message: 'User created!'
+			});
+
+		});
+
+	});
 
 app.use('/api', apiRouter);
 
