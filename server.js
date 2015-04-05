@@ -95,6 +95,52 @@ apiRouter.route('/users')
 		});
 	});
 
+apiRouter.route('/users/:user_id')
+	.get(function(req, res) {
+
+		var user_id = req.params.user_id;
+
+		User.findById(user_id, function(err, user) {
+
+			if (err) res.send(err);
+
+			res.json(user);
+
+		});
+
+	})
+
+	.put(function(req, res) {
+
+		var user_id = req.params.user_id;
+
+		User.findById(user_id, function(err, user) {
+
+			if (err) res.send(err);
+
+			if (req.body.name)
+				user.name = req.body.name;
+
+			if (req.body.username)
+				user.username = req.body.username;
+
+			if (req.body.password)
+				user.password = req.body.password; 
+
+			user.save(function(err) {
+
+				if (err) res.send(err);
+
+				res.json({
+					message: 'User just updated!'
+				});
+
+			});
+
+		});
+
+	});
+
 app.use('/api', apiRouter);
 
 app.listen(port, function() {
