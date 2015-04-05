@@ -4,6 +4,8 @@ var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var port = process.env.PORT || 5555;
 var mongoose = require('mongoose');
+var jwt = require('jsonwebtoken');
+
 mongoose.connect('mongodb://localhost/mean');
 
 var User = require('./app/models/user');
