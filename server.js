@@ -139,6 +139,21 @@ apiRouter.route('/users/:user_id')
 
 		});
 
+	})
+
+	.delete(function(req, res) {
+		
+		var user_id = req.params.user_id;
+
+		User.remove({_id: user_id}, function(err, user) {
+			if (err) return res.send(err);
+
+			res.json({
+				message: 'Successfully deleted!'
+			});
+
+		});
+
 	});
 
 app.use('/api', apiRouter);
