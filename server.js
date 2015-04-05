@@ -38,6 +38,10 @@ app.get('/', function(req, res) {
 
 var apiRouter = express.Router();
 
+apiRouter.use(function(req, res, next) {
+	
+});
+
 apiRouter.post('/authenticate', function(req, res) {
 
 	User.findOne({
