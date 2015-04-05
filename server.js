@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 var jwt = require('jsonwebtoken');
 
 mongoose.connect('mongodb://localhost/mean');
+var superSecret = 'iloveyou';
 
 var User = require('./app/models/user');
 
@@ -29,7 +30,6 @@ app.use(function(req, res, next) {
 // Logger with morgan.
 app.use(morgan('dev'));
 
-
 app.get('/', function(req, res) {
 
 	res.send('Welcome to the home page!');
@@ -37,6 +37,58 @@ app.get('/', function(req, res) {
 });
 
 var apiRouter = express.Router();
+
+apiRouter.post('/authenticate', function(req, res) {
+
+	User.findOne({
+		username: req.body.username
+	})
+	.select('name username password')
+	.exec(function(err, user) {
+
+		if (err) throw err;
+
+		// IF not found username
+		if (!user) {
+
+			res.json({
+				success: false,
+				message: 'Authentication failed. User not found.'
+			});
+
+		} else if (user) {
+
+			var validPassword = user.comparePassword(req.body.password);
+
+			if (!validPassword) {
+
+				res.json({
+					success: false,
+					message: 'Authentication failed. Wrong password.'
+				});
+
+			} else {
+
+				var token = jwt.sign({
+					name: user.name,
+					username: user.username
+				}, superSecret, {
+					expiredInMinutes: 1440 // expires in 24 hours
+				});
+
+				res.json({
+					success: true,
+					message: 'Enjoy your token!',
+					token: token
+				});
+
+			}
+
+		}
+
+	});
+
+});
 
 apiRouter.use(function(req, res, next) {
 
