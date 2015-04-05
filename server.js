@@ -95,6 +95,7 @@ apiRouter.route('/users')
 		});
 	});
 
+// CRUD with router /users/:user_id (POST, GET, PUT, DELETE)
 apiRouter.route('/users/:user_id')
 	.get(function(req, res) {
 
@@ -142,7 +143,7 @@ apiRouter.route('/users/:user_id')
 	})
 
 	.delete(function(req, res) {
-		
+
 		var user_id = req.params.user_id;
 
 		User.remove({_id: user_id}, function(err, user) {
