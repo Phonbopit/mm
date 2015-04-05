@@ -1,45 +1,50 @@
 var express = require('express');
 var path = require('path');
+var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
+var morgan = require('morgan');
+var port = process.env.PORT || 5555;
+
+mongoose.connect('mongodb://localhost/mean');
 
 var app = express();
-
 var adminRouter = express.Router();
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-app.get('/', function(req, res) {
+app.use(function(req, res, next) {
 
-	res.sendFile(path.join(__dirname + '/index.html'));
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Authorization');
 
-});
-
-adminRouter.use(function(req, res, next) {
-
-	console.log(req.method + req.url);
-
-	// go to the next middleware
 	next();
 
 });
 
-adminRouter.get('/', function(req, res) {
+// Logger with morgan.
+app.use(morgan('dev'));
 
-	// response
+
+app.get('/', function(req, res) {
+
+	res.send('Welcome to the home page!');
 
 });
 
-app.use('/admin', adminRouter);
+var apiRouter = express.Router();
 
-app.route('/login')
+apiRouter.get('/', function(req, res) {
 
-	.get(function(req, res) {
-		res.send('This is login form');
-	})
-	
-	.post(function(req, res) {
-		res.send('This is login form (POST)');
+	res.json({ 
+		message: 'Hooray! welcome to our api!'
 	});
 
-app.listen(5555, function() {
+});
 
-	console.log('Server is running on port 5555');
+app.use('/api', apiRouter);
+
+app.listen(port, function() {
+	console.log('Magic happends on port' + port);
 });
