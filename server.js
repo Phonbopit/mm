@@ -32,7 +32,7 @@ app.use(morgan('dev'));
 
 app.get('/', function(req, res) {
 
-	res.send('Welcome to the home page!');
+	res.sendFile(path.join(__dirname + '/index.html'));
 
 });
 
@@ -246,7 +246,7 @@ apiRouter.route('/users/:user_id')
 apiRouter.get('/me', function(req, res) {
 
 	res.send(req.decoded);
-	
+
 });
 
 app.use('/api', apiRouter);
