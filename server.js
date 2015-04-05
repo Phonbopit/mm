@@ -29,6 +29,16 @@ adminRouter.get('/', function(req, res) {
 
 app.use('/admin', adminRouter);
 
+app.route('/login')
+
+	.get(function(req, res) {
+		res.send('This is login form');
+	})
+	
+	.post(function(req, res) {
+		res.send('This is login form (POST)');
+	});
+
 app.listen(5555, function() {
 
 	console.log('Server is running on port 5555');
