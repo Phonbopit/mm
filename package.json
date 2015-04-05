@@ -1,4 +1,8 @@
 {
-	"name": "MEAN Machine",
-	"version": "0.0.1"
+  "name": "MEAN-Machine",
+  "version": "0.0.1",
+  "devDependencies": {
+    "express": "^4.12.3",
+    "mongoose": "^4.0.1"
+  }
 }
