@@ -18,7 +18,7 @@ app.use(function(req, res, next) {
 
 	res.setHeader('Access-Control-Allow-Origin', '*');
 	res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
-	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Authorization');
+	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type, Authorization');
 
 	next();
 
@@ -81,6 +81,18 @@ apiRouter.route('/users')
 
 		});
 
+	})
+
+	.get(function(req, res) {
+
+		User.find(function(err, users) {
+
+			if (err) 
+				res.send(err);
+
+			res.json(users);
+
+		});
 	});
 
 app.use('/api', apiRouter);
