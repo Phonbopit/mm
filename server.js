@@ -14,6 +14,7 @@ var User = require('./app/models/user');
 var app = express();
 var adminRouter = express.Router();
 
+app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
